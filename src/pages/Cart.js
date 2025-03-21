@@ -1,0 +1,50 @@
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "../store/CartSlice";
+
+const Cart = () => {
+  const cartProducts = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+
+  const deleteCart = (itemId) => {
+    dispatch(removeFromCart(itemId));
+  };
+
+  return (
+    <div className="container py-4">
+      <h1 className="text-center mb-4">Shopping Cart</h1>
+      {cartProducts.length === 0 ? (
+        <h4 className="text-center">Your cart is empty.</h4>
+      ) : (
+        <div className="row">
+          {cartProducts.map((item) => (
+            <div
+              key={item.id}
+              className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+            >
+              <div className="card h-100">
+                <img
+                  src={item.img}
+                  className="card-img-top img-fluid"
+                  alt={item.title}
+                />
+                <div className="card-body text-center">
+                  <h5 className="card-title">{item.title}</h5>
+                  <p className="card-text">{item.price}</p>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteCart(item.id)}
+                  >
+                    Remove from Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Cart;
