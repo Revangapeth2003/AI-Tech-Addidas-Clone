@@ -1,13 +1,23 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart } from "../store/CartSlice";
+import { removeFromCart,updateQuantity } from "../store/CartSlice";
 
 const Cart = () => {
   const cartProducts = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
 
-  const deleteCart = (itemId) => {
-    dispatch(removeFromCart(itemId));
+  const incrementCart = (id,quantity)=>{
+    dispatch(updateQuantity({id,quantity : quantity + 1}))
+  };
+
+  const decrementCart = (id,quantity)=>{
+    if(quantity > 1){
+      dispatch(updateQuantity({id,quantity : quantity - 1}))
+    }
+  };
+
+  const deleteCart = (item) => {
+    dispatch(removeFromCart(item));
   };
 
   return (
@@ -31,12 +41,19 @@ const Cart = () => {
                 <div className="card-body text-center">
                   <h5 className="card-title">{item.title}</h5>
                   <p className="card-text">{item.price}</p>
+                  <button className="btn btn-outline-primary mx-2" onClick={()=>{incrementCart(item.id,item.quantity)}}>
+                    +
+                  </button>{item.quantity}
+                  <button className="btn btn-outline-primary mx-2" onClick={()=>{decrementCart(item.id,item.quantity)}}>
+                    -
+                  </button>
                   <button
-                    className="btn btn-danger"
-                    onClick={() => deleteCart(item.id)}
+                    className="btn btn-danger mt-2"
+                    onClick={() => deleteCart(item)}
                   >
                     Remove from Cart
                   </button>
+                  
                 </div>
               </div>
             </div>
