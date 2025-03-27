@@ -5,14 +5,17 @@ import { addToCart, removeFromCart } from "../store/CartSlice.js";
 
 const Men = () => {
   const cartProducts = useSelector((state) => state.cart.cartItems);
+  console.log(cartProducts,"data from redux")
   const dispatch = useDispatch();
 
   const addCart = (item) => {
+    console.log("Data on add men",item)
     dispatch(addToCart(item));
   };
 
-  const removeCart = (itemId) => {
-    dispatch(removeFromCart(itemId));
+  const removeCart = (item) => {
+    console.log("Data on delete men",item)
+    dispatch(removeFromCart(item));
   };
   return (
     <div>
@@ -87,6 +90,8 @@ const Men = () => {
                   {cartProducts.find((item) => item.id === product.id) ? (
                     <button
                       onClick={() => removeCart(product)}
+                      // onClick={() => deleteCart(item.id , item.quantity)}
+
                       className="btn btn-danger mt-auto"
                     >
                       Remove
