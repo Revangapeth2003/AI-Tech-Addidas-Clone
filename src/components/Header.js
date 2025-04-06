@@ -63,6 +63,11 @@ const Header = () => {
                 Cart
               </Link>
             </li>
+            <li className="nav-item ms-3">
+              <Link to="/upload" className="nav-link">
+                Upload
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
