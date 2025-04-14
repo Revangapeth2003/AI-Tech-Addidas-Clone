@@ -68,6 +68,11 @@ const Header = () => {
                 Upload
               </Link>
             </li>
+            <li className="nav-item ms-3">
+              <Link to="/form" className="nav-link">
+                Form
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

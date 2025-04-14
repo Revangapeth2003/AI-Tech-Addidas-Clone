@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import Upload from "./pages/Upload";
 import Update from "./pages/Update";
+import Edit from "./pages/Edit";
+import Form from "./pages/Form";
 
 const App = () => {
   return (
@@ -22,6 +24,12 @@ const App = () => {
         <Route path="/cart" component={Cart} />
         <Route path="/upload" component={Upload} />
         <Route path="/update" component={Update} />
+        <Route path="/form" component={Form} />
+        <Route
+          path="/edit/:id"
+          component={Edit}
+          loader={({ params }) => fetch(`http://localhost:3030/form/${params.id}`)}
+        />
       </Switch>
       <Footer />
     </BrowserRouter>
@@ -29,3 +37,6 @@ const App = () => {
 };
 
 export default App;
+
+
+// $env:NODE_OPTIONS="--openssl-legacy-provider"; npm start
