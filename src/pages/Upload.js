@@ -9,36 +9,58 @@ const Upload = () => {
     image: "",
   });
 
+  const [error, setError] = useState({});
+
+  const validateForm = () => {
+    const newError = {};
+    if (!form.title) newError.title = "Please enter your title";
+    if (!form.description)
+      newError.description = "Please enter your description";
+    if (!form.price) newError.price = "Please enter your price";
+    if (!form.quantity) newError.quantity = "Please enter your quantity";
+    if (!form.image) newError.image = "Please enter your image";
+    return newError;
+  };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3030/form", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+    const formError = validateForm();
+    setError(formError);
 
-      const data = await response.json();
-      if (response.ok) {
-        alert("Form submitted successfully!");
-        setForm({
-          title: "",
-          description: "",
-          price: "",
-          quantity: "",
-          image: "",
+    if (Object.keys(formError).length === 0) {
+      try {
+        const response = await fetch("http://localhost:3030/form", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
         });
-        window.location.href = "/update";
-      } else {
-        alert("Error: " + data.error);
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Form submitted successfully!");
+          setForm({
+            title: "",
+            description: "",
+            price: "",
+            quantity: "",
+            image: "",
+          });
+          setError({});
+          window.location.href = "/update";
+        } else {
+          alert("Error: " + data.error);
+        }
+      } catch (err) {
+        console.error("Error submitting form:", err);
+        alert("Failed to submit the form.");
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Failed to submit the form.");
+    } else {
+      console.log("Please fix the errors before submitting.");
     }
   };
 
@@ -64,6 +86,7 @@ const Upload = () => {
               style={{ maxHeight: "200px" }}
             />
           )}
+          {error.image && <p style={{ color: "red" }}>{error.image}</p>}
         </div>
 
         <div className="mb-3">
@@ -77,6 +100,7 @@ const Upload = () => {
             value={form.title}
             onChange={handleChange}
           />
+          {error.title && <p style={{ color: "red" }}>{error.title}</p>}
         </div>
 
         <div className="mb-3">
@@ -90,6 +114,9 @@ const Upload = () => {
             onChange={handleChange}
             rows="3"
           />
+          {error.description && (
+            <p style={{ color: "red" }}>{error.description}</p>
+          )}
         </div>
 
         <div className="mb-3">
@@ -103,6 +130,7 @@ const Upload = () => {
             value={form.price}
             onChange={handleChange}
           />
+          {error.price && <p style={{ color: "red" }}>{error.price}</p>}
         </div>
 
         <div className="mb-3">
@@ -116,6 +144,7 @@ const Upload = () => {
             value={form.quantity}
             onChange={handleChange}
           />
+          {error.quantity && <p style={{ color: "red" }}>{error.quantity}</p>}
         </div>
 
         <button type="submit" className="btn btn-primary">

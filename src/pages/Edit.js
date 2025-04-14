@@ -55,9 +55,9 @@ const Edit = () => {
             className="form-control"
             name="image"
             defaultValue={productData.image}
-            // onChange={(e) =>
-            //   setProductData({ ...productData, image: e.target.value })
-            // }
+            onChange={(e) =>
+              setProductData({ ...productData, image: e.target.value })
+            }
           />
           {productData.image && (
             <img
@@ -78,9 +78,9 @@ const Edit = () => {
             className="form-control"
             name="title"
             defaultValue={productData.title}
-            // onChange={(e) =>
-            //   setProductData({ ...productData, title: e.target.value })
-            // }
+            onChange={(e) =>
+              setProductData({ ...productData, title: e.target.value })
+            }
           />
         </div>
 
@@ -92,9 +92,9 @@ const Edit = () => {
             className="form-control"
             name="description"
             defaultValue={productData.description}
-            // onChange={(e) =>
-            //   setProductData({ ...productData, description: e.target.value })
-            // }
+            onChange={(e) =>
+              setProductData({ ...productData, description: e.target.value })
+            }
             rows="3"
           />
         </div>
@@ -108,9 +108,9 @@ const Edit = () => {
             className="form-control"
             name="price"
             defaultValue={productData.price}
-            // onChange={(e) =>
-            //   setProductData({ ...productData, price: e.target.value })
-            // }
+            onChange={(e) =>
+              setProductData({ ...productData, price: e.target.value })
+            }
           />
         </div>
 
