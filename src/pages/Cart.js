@@ -1,18 +1,18 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart,updateQuantity } from "../store/CartSlice";
+import { removeFromCart, updateQuantity } from "../store/CartSlice";
 
 const Cart = () => {
   const cartProducts = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
 
-  const incrementCart = (id,quantity)=>{
-    dispatch(updateQuantity({id,quantity : quantity + 1}))
+  const incrementCart = (id, quantity) => {
+    dispatch(updateQuantity({ id, quantity: quantity + 1 }));
   };
 
-  const decrementCart = (id,quantity)=>{
-    if(quantity > 1){
-      dispatch(updateQuantity({id,quantity : quantity - 1}))
+  const decrementCart = (id, quantity) => {
+    if (quantity > 1) {
+      dispatch(updateQuantity({ id, quantity: quantity - 1 }));
     }
   };
 
@@ -41,10 +41,21 @@ const Cart = () => {
                 <div className="card-body text-center">
                   <h5 className="card-title">{item.title}</h5>
                   <p className="card-text">{item.price}</p>
-                  <button className="btn btn-outline-primary mx-2" onClick={()=>{incrementCart(item.id,item.quantity)}}>
+                  <button
+                    className="btn btn-outline-primary mx-2"
+                    onClick={() => {
+                      incrementCart(item.id, item.quantity);
+                    }}
+                  >
                     +
-                  </button>{item.quantity}
-                  <button className="btn btn-outline-primary mx-2" onClick={()=>{decrementCart(item.id,item.quantity)}}>
+                  </button>
+                  {item.quantity}
+                  <button
+                    className="btn btn-outline-primary mx-2"
+                    onClick={() => {
+                      decrementCart(item.id, item.quantity);
+                    }}
+                  >
                     -
                   </button>
                   <button
@@ -53,7 +64,6 @@ const Cart = () => {
                   >
                     Remove from Cart
                   </button>
-                  
                 </div>
               </div>
             </div>
@@ -65,3 +75,5 @@ const Cart = () => {
 };
 
 export default Cart;
+
+

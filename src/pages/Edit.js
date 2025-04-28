@@ -3,135 +3,126 @@ import { useParams } from "react-router-dom";
 
 const Edit = () => {
   const { id } = useParams();
-  const [productData, setProductData] = useState({
+  const [productItems, setProductItems] = useState({
     title: "",
-    description: "",
-    price: "",
+    description: "", // Changed from 'dis' to 'description'
+    img: "",
     quantity: "",
-    image: "",
+    price: "",
   });
 
   useEffect(() => {
     fetch(`http://localhost:3030/form/${id}`)
       .then((res) => res.json())
-      .then((data) => setProductData(data));
-  });
+      .then((data) => {
+        // Map the incoming data to match our state structure
+        setProductItems({
+          title: data.title || "",
+          description: data.description || "", // Changed from 'dis'
+          img: data.img || "",
+          quantity: data.quantity || "",
+          price: data.price || "",
+        });
+      });
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProductItems((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.target;
-    const image = form.image.value;
-    const title = form.title.value;
-    const price = form.price.value;
-    const description = form.description.value;
-    const quantity = form.quantity.value;
-
-    const productObj = { image, title, price, description, quantity };
-    console.log(productObj);
-
     fetch(`http://localhost:3030/form/${id}`, {
-      method: "PATCH", //edit
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(productData),
+      body: JSON.stringify(productItems),
     })
       .then((res) => res.json())
-      .then(() => {
-        alert("Edited Successfully");
+      .then((data) => {
+        alert("Updated successfully!");
         window.location.href = "/update";
+      })
+      .catch((err) => {
+        console.error("Update failed", err);
+        alert("Failed to update. Please try again.");
       });
   };
 
   return (
-    <div className="container px-3 py-5">
+    <div>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">
-            <h3>Image URL</h3>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="image"
-            defaultValue={productData.image}
-            onChange={(e) =>
-              setProductData({ ...productData, image: e.target.value })
-            }
-          />
-          {productData.image && (
-            <img
-              src={productData.image}
-              alt="Preview"
-              className="img-fluid mt-2"
-              style={{ maxHeight: "200px" }}
+        <h3 className="p-3 text-center">Updating Your Product</h3>
+        <div className="g-3 text-center">
+          <div>
+            <label className="me-4">
+              <b>Title</b>
+            </label>
+            <input
+              type="text"
+              value={productItems.title}
+              name="title"
+              onChange={handleChange}
             />
-          )}
+          </div>
+          <br />
+          <div>
+            <label className="me-4">
+              <b>Description</b>
+            </label>
+            <input
+              type="text"
+              value={productItems.description} // Changed from 'dis'
+              name="description" // Changed from 'dis'
+              onChange={handleChange}
+            />
+          </div>
+          <br />
+          <div>
+            <label className="me-4">
+              <b>Price</b>
+            </label>
+            <input
+              type="number"
+              value={productItems.price}
+              name="price"
+              onChange={handleChange}
+            />
+          </div>
+          <br />
+          <div>
+            <label className="me-4">
+              <b>Quantity</b>
+            </label>
+            <input
+              type="number"
+              value={productItems.quantity}
+              name="quantity"
+              onChange={handleChange}
+            />
+          </div>
+          <br />
+          <div>
+            <label className="me-4">
+              <b>Image URL</b>
+            </label>
+            <input
+              type="text"
+              value={productItems.img}
+              name="img"
+              onChange={handleChange}
+            />
+          </div>
+          <br />
+          <button type="submit" className="btn btn-primary mb-3">
+            Update
+          </button>
         </div>
-
-        <div className="mb-3">
-          <label className="form-label">
-            <h3>Title</h3>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="title"
-            defaultValue={productData.title}
-            onChange={(e) =>
-              setProductData({ ...productData, title: e.target.value })
-            }
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">
-            <h3>Description</h3>
-          </label>
-          <textarea
-            className="form-control"
-            name="description"
-            defaultValue={productData.description}
-            onChange={(e) =>
-              setProductData({ ...productData, description: e.target.value })
-            }
-            rows="3"
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">
-            <h3>Price</h3>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="price"
-            defaultValue={productData.price}
-            onChange={(e) =>
-              setProductData({ ...productData, price: e.target.value })
-            }
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">
-            <h3>Quantity</h3>
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            name="quantity"
-            defaultValue={productData.quantity}
-            // onChange={(e) =>
-            //   setProductData({ ...productData, quantity: e.target.value })
-            // }
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
       </form>
     </div>
   );

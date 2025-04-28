@@ -42,7 +42,7 @@ const Update = () => {
             <tr key={item._id}>
               <td>
                 <img
-                  src={item.image}
+                  src={item.img}
                   alt="product"
                   style={{ width: "100px", height: "100px" }}
                 />

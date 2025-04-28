@@ -6,7 +6,7 @@ const Upload = () => {
     description: "",
     price: "",
     quantity: "",
-    image: "",
+    img: "",
   });
 
   const [error, setError] = useState({});
@@ -18,7 +18,7 @@ const Upload = () => {
       newError.description = "Please enter your description";
     if (!form.price) newError.price = "Please enter your price";
     if (!form.quantity) newError.quantity = "Please enter your quantity";
-    if (!form.image) newError.image = "Please enter your image";
+    if (!form.img) newError.img = "Please enter your img";
     return newError;
   };
 
@@ -41,14 +41,14 @@ const Upload = () => {
 
         const data = await response.json();
 
-        if (response.ok) {
+        if (response) {
           alert("Form submitted successfully!");
           setForm({
             title: "",
             description: "",
             price: "",
             quantity: "",
-            image: "",
+            img: "",
           });
           setError({});
           window.location.href = "/update";
@@ -74,19 +74,19 @@ const Upload = () => {
           <input
             type="text"
             className="form-control"
-            name="image"
-            value={form.image}
+            name="img"
+            value={form.img}
             onChange={handleChange}
           />
-          {form.image && (
+          {form.img && (
             <img
-              src={form.image}
+              src={form.img}
               alt="Preview"
               className="img-fluid mt-2"
               style={{ maxHeight: "200px" }}
             />
           )}
-          {error.image && <p style={{ color: "red" }}>{error.image}</p>}
+          {error.img && <p style={{ color: "red" }}>{error.img}</p>}
         </div>
 
         <div className="mb-3">
@@ -147,7 +147,6 @@ const Upload = () => {
           {error.quantity && <p style={{ color: "red" }}>{error.quantity}</p>}
         </div>
 
-        
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
