@@ -5,7 +5,7 @@ const Edit = () => {
   const { id } = useParams();
   const [productItems, setProductItems] = useState({
     title: "",
-    description: "", // Changed from 'dis' to 'description'
+    description: "",
     img: "",
     quantity: "",
     price: "",
@@ -15,10 +15,9 @@ const Edit = () => {
     fetch(`http://localhost:3030/form/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        // Map the incoming data to match our state structure
         setProductItems({
           title: data.title || "",
-          description: data.description || "", // Changed from 'dis'
+          description: data.description || "",
           img: data.img || "",
           quantity: data.quantity || "",
           price: data.price || "",
@@ -55,75 +54,98 @@ const Edit = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <h3 className="p-3 text-center">Updating Your Product</h3>
-        <div className="g-3 text-center">
-          <div>
-            <label className="me-4">
-              <b>Title</b>
-            </label>
-            <input
-              type="text"
-              value={productItems.title}
-              name="title"
-              onChange={handleChange}
-            />
+    <div className="container mt-5">
+      <div className="card shadow p-4">
+        <h3 className="text-center mb-4">Update Your Product</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="row g-3">
+            <div className="col-md-12">
+              <label htmlFor="title" className="form-label fw-bold">
+                Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                className="form-control"
+                value={productItems.title}
+                name="title"
+                onChange={handleChange}
+                placeholder="Enter product title"
+                required
+              />
+            </div>
+
+            <div className="col-md-12">
+              <label htmlFor="description" className="form-label fw-bold">
+                Description
+              </label>
+              <textarea
+                id="description"
+                className="form-control"
+                value={productItems.description}
+                name="description"
+                onChange={handleChange}
+                rows="3"
+                placeholder="Enter product description"
+                required
+              ></textarea>
+            </div>
+
+            <div className="col-md-6">
+              <label htmlFor="price" className="form-label fw-bold">
+                Price
+              </label>
+              <input
+                type="number"
+                id="price"
+                className="form-control"
+                value={productItems.price}
+                name="price"
+                onChange={handleChange}
+                placeholder="Enter price"
+                required
+              />
+            </div>
+
+            <div className="col-md-6">
+              <label htmlFor="quantity" className="form-label fw-bold">
+                Quantity
+              </label>
+              <input
+                type="number"
+                id="quantity"
+                className="form-control"
+                value={productItems.quantity}
+                name="quantity"
+                onChange={handleChange}
+                placeholder="Enter quantity"
+                required
+              />
+            </div>
+
+            <div className="col-md-12">
+              <label htmlFor="img" className="form-label fw-bold">
+                Image URL
+              </label>
+              <input
+                type="text"
+                id="img"
+                className="form-control"
+                value={productItems.img}
+                name="img"
+                onChange={handleChange}
+                placeholder="Enter image URL"
+              />
+            </div>
           </div>
-          <br />
-          <div>
-            <label className="me-4">
-              <b>Description</b>
-            </label>
-            <input
-              type="text"
-              value={productItems.description} // Changed from 'dis'
-              name="description" // Changed from 'dis'
-              onChange={handleChange}
-            />
+
+          <div className="text-center mt-4">
+            <button type="submit" className="btn btn-primary px-5">
+              Update
+            </button>
           </div>
-          <br />
-          <div>
-            <label className="me-4">
-              <b>Price</b>
-            </label>
-            <input
-              type="number"
-              value={productItems.price}
-              name="price"
-              onChange={handleChange}
-            />
-          </div>
-          <br />
-          <div>
-            <label className="me-4">
-              <b>Quantity</b>
-            </label>
-            <input
-              type="number"
-              value={productItems.quantity}
-              name="quantity"
-              onChange={handleChange}
-            />
-          </div>
-          <br />
-          <div>
-            <label className="me-4">
-              <b>Image URL</b>
-            </label>
-            <input
-              type="text"
-              value={productItems.img}
-              name="img"
-              onChange={handleChange}
-            />
-          </div>
-          <br />
-          <button type="submit" className="btn btn-primary mb-3">
-            Update
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

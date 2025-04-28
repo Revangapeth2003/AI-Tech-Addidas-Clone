@@ -3,13 +3,12 @@ import { Link } from "react-router-dom";
 
 const Update = () => {
   const [products, setProducts] = useState([]);
-  // const location = useLocation();
 
   useEffect(() => {
     fetch("http://localhost:3030/form")
       .then((res) => res.json())
       .then((data) => setProducts(data));
-  }); // re-fetch on location change
+  }, []); // Fixed useEffect by adding []
 
   const deleteItems = (id) => {
     fetch(`http://localhost:3030/form/${id}`, {
@@ -23,10 +22,11 @@ const Update = () => {
   };
 
   return (
-    <div className="container-fluid py-5">
-      <h1>This is the update page</h1>
-      <table className="table table-striped">
-        <thead>
+    <div className="container py-5">
+      <h1 className="text-center mb-5">Update Products</h1>
+
+      <table className="table table-bordered table-hover text-center align-middle">
+        <thead className="table-dark">
           <tr>
             <th>IMAGE</th>
             <th>TITLE</th>
@@ -44,16 +44,19 @@ const Update = () => {
                 <img
                   src={item.img}
                   alt="product"
-                  style={{ width: "100px", height: "100px" }}
+                  className="img-fluid rounded"
+                  style={{ width: "80px", height: "80px", objectFit: "cover" }}
                 />
               </td>
-              <td>{item.title}</td>
-              <td>{item.description}</td>
-              <td>{item.price}</td>
+              <td className="fw-semibold">{item.title}</td>
+              <td className="text-truncate" style={{ maxWidth: "150px" }}>
+                {item.description}
+              </td>
+              <td className="fw-bold">${item.price}</td>
               <td>{item.quantity}</td>
               <td>
                 <button
-                  className="btn btn-danger btn-sm"
+                  className="btn btn-sm btn-outline-danger"
                   onClick={() => deleteItems(item._id)}
                 >
                   Delete
@@ -61,7 +64,9 @@ const Update = () => {
               </td>
               <td>
                 <Link to={`/edit/${item._id}`}>
-                  <button className="btn btn-warning btn-sm">Update</button>
+                  <button className="btn btn-sm btn-outline-warning">
+                    Update
+                  </button>
                 </Link>
               </td>
             </tr>
