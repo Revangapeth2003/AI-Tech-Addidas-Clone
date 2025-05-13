@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Upload = () => {
   const [form, setForm] = useState({
@@ -33,15 +34,9 @@ const Upload = () => {
 
     if (Object.keys(formError).length === 0) {
       try {
-        const response = await fetch("http://localhost:3030/form", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
+        const response = await axios.post("http://localhost:3030/form", form);
 
-        const data = await response.json();
-
-        if (response) {
+        if (response.status === 200 || response.status === 201) {
           alert("Form submitted successfully!");
           setForm({
             title: "",
@@ -53,7 +48,7 @@ const Upload = () => {
           setError({});
           window.location.href = "/update";
         } else {
-          alert("Error: " + data.error);
+          alert("Error: " + response.data.error);
         }
       } catch (err) {
         console.error("Error submitting form:", err);

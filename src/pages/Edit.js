@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Edit = () => {
   const { id } = useParams();
@@ -12,9 +13,10 @@ const Edit = () => {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:3030/form/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3030/form/${id}`);
+        const data = res.data;
         setProductItems({
           title: data.title || "",
           description: data.description || "",
@@ -22,7 +24,13 @@ const Edit = () => {
           quantity: data.quantity || "",
           price: data.price || "",
         });
-      });
+      } catch (err) {
+        console.error("Error fetching product:", err);
+        alert("Failed to load product data.");
+      }
+    };
+
+    fetchData();
   }, [id]);
 
   const handleChange = (e) => {
@@ -33,24 +41,16 @@ const Edit = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    fetch(`http://localhost:3030/form/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(productItems),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert("Updated successfully!");
-        window.location.href = "/update";
-      })
-      .catch((err) => {
-        console.error("Update failed", err);
-        alert("Failed to update. Please try again.");
-      });
+    try {
+      await axios.patch(`http://localhost:3030/form/${id}`, productItems);
+      alert("Updated successfully!");
+      window.location.href = "/update";
+    } catch (err) {
+      console.error("Update failed", err);
+      alert("Failed to update. Please try again.");
+    }
   };
 
   return (

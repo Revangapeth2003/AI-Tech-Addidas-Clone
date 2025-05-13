@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Update = () => {
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost:3030/form")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []); // Fixed useEffect by adding []
+  const getAllItems = async () => {
+    try {
+      const response = await axios.get("http://localhost:3030/form");
+      setProducts(response.data);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+    }
+  };
 
-  const deleteItems = (id) => {
-    fetch(`http://localhost:3030/form/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then(() => {
-        alert("Deleted Successfully");
-        setProducts((prevItems) => prevItems.filter((item) => item._id !== id));
-      });
+  useEffect(() => {
+    getAllItems();
+  }, []);
+
+  const deleteItems = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3030/form/${id}`);
+      alert("Deleted Successfully");
+      setProducts((prevItems) => prevItems.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error("Error deleting item:", err);
+      alert("Failed to delete item.");
+    }
   };
 
   return (
